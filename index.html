@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Cyber Cyclone - TikTok Live</title>
+  
+  <!-- Dependências Externas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Container Fullscreen Mobile -->
+  <div class="viewport-wrapper" id="viewport">
+    
+    <!-- Desbloqueio de Áudio Inicial -->
+    <div class="start-overlay" id="start-overlay" onclick="startGame()">
+      <button class="start-btn">CLIQUE PARA JOGAR</button>
+      <p>Ativa física e efeitos sonoros</p>
+    </div>
+
+    <div class="holo-grid"></div>
+
+    <!-- HUD Superior -->
+    <div class="hud-top">
+      <div class="glass-panel">
+        <div class="header-row">
+          <span class="game-logo">CYBER CYCLONE</span>
+          <div class="badge-live">
+            <div class="dot-live"></div> LIVE
+          </div>
+        </div>
+        
+        <div class="boss-hud-labels">
+          <span id="boss-name">BOSS: CYBER MECHA</span>
+          <span id="boss-hp">100%</span>
+        </div>
+        <div class="boss-meter-wrap">
+          <div class="boss-meter-fill" id="boss-fill"></div>
+        </div>
+      </div>
+
+      <div class="glass-panel champion-bar">
+        <div class="trophy-icon">👑</div>
+        <div class="champ-details">
+          <div class="champ-title">Maior Pontuador</div>
+          <div class="champ-name" id="top-user">Aguardando drops...</div>
+        </div>
+        <div class="champ-score" id="top-score">0 PTS</div>
+      </div>
+    </div>
+
+    <!-- Feed de Notificações -->
+    <div class="toast-feed" id="toast-feed"></div>
+
+    <!-- Canvas Fullscreen -->
+    <canvas id="fx-canvas"></canvas>
+
+    <!-- Multiplicadores Plinko (Safe Zone) -->
+    <div class="slots-container">
+      <div class="slot-box" id="slot-0">2X</div>
+      <div class="slot-box" id="slot-1">5X</div>
+      <div class="slot-box" id="slot-2">15X</div>
+      <div class="slot-box" id="slot-3">5X</div>
+      <div class="slot-box" id="slot-4">2X</div>
+    </div>
+
+    <!-- Painel de Testes -->
+    <div class="debug-dock" id="debug-dock">
+      <button onclick="triggerLike('Gamer_Tap')">❤️ Like</button>
+      <button onclick="triggerComment('User_Chat', '!drop')">💬 Chat</button>
+      <button onclick="triggerGift('Spectator_01', 'Rosa')">🌹 Rosa</button>
+      <button onclick="triggerGift('Mega_Supporter', 'Capivara')">🐹 Capivara</button>
+      <button onclick="triggerGift('Lord_Whale', 'Galáxia')">🌌 Galáxia</button>
+      <button onclick="hideDock()">👁️ Ocultar</button>
+    </div>
+
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
