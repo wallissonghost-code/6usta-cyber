@@ -1,0 +1,1 @@
+(()=>{'use strict';window.CYBER_CONFIG=Object.freeze({gameId:'cyber-cyclone',version:'Beta 0.1.0',panelStorageKey:'cyber-liveplus-token',panelCodeKey:'cyber-panel-code',seenCommandsKey:'cyber-live-seen-v1'});})();
