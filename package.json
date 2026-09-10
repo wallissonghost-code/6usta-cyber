@@ -1,0 +1,1 @@
+{"name":"cyber-cyclone-qa","private":true,"version":"0.1.0","scripts":{"serve":"http-server . -p 4173 -c-1","test:quick":"playwright test tests/game.spec.js","test:visual":"playwright test tests/visual.spec.js","test":"npm run test:quick && npm run test:visual"},"devDependencies":{"@playwright/test":"^1.55.0","http-server":"^14.1.1"}}
