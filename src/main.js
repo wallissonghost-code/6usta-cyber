@@ -19,6 +19,7 @@ window.CyberGame=Object.freeze({
  reset:runtime.reset,
  resize:runtime.resize,
  getState:runtime.getState,
+ getBallAudit:runtime.getBallAudit,
  triggerLike:commands.like,
  triggerComment:commands.comment,
  triggerGift:commands.gift,
