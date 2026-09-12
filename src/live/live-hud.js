@@ -8,8 +8,8 @@ function ruleAction(rule){return text(rule.actionId||rule.action||rule.command)}
 function params(rule){return rule.params||rule.actionParams||rule.effectParams||{}}
 function giftName(rule){return text(rule.giftName||rule.triggerName||rule.gift?.name||rule.gift?.title,'Presente')}
 function giftIcon(rule){return safeImage(rule.giftIcon||rule.giftImage||rule.gift?.icon||rule.gift?.image||rule.gift?.imageUrl)}
-function tierEffect(p){const type=text(p.ballType,'tier1'),config=GAME_RULES.types[type]||GAME_RULES.types.tier1,q=Math.max(1,Number(p.quantity)||1);return `${q}× Tier ${config.tier} · ${config.damage} dano${q>1?' cada':''}`}
-function effect(rule){const p=params(rule);if(ruleAction(rule)==='drop_ball')return tierEffect(p);if(ruleAction(rule)==='restart')return'Reiniciar partida';return ruleAction(rule)||'Ação'}
+function ballEffect(p){const type=text(p.ballType,'tier1'),config=GAME_RULES.types[type]||GAME_RULES.types.tier1,q=Math.max(1,Number(p.quantity)||1);return `${q}× ${q===1?'bolinha':'bolinhas'} · ${config.damage} dano${q>1?' cada':''}`}
+function effect(rule){const p=params(rule);if(ruleAction(rule)==='drop_ball')return ballEffect(p);if(ruleAction(rule)==='restart')return'Reiniciar partida';return ruleAction(rule)||'Ação'}
 export function createLiveHud(){
  let rules=[];
  const root=$('live-interactions');
