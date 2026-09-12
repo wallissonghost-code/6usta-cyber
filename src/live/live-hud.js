@@ -13,15 +13,17 @@ export function createLiveHud(){
  const root=$('live-interactions');
  const list=$('live-interactions-list');
  const toggle=$('liveHudToggle');
+ const slots=document.querySelector('.slots-container');
  let frame=0;
  function savedVisible(){try{const value=localStorage.getItem(HUD_KEY);return value===null?true:value==='1'}catch{return true}}
  function syncLayout(){
   cancelAnimationFrame(frame);
   frame=requestAnimationFrame(()=>{
-   if(!root||root.hidden){document.documentElement.style.setProperty('--live-hud-reserve','18px');return}
+   if(!slots)return;
+   if(!root||root.hidden){slots.style.bottom='max(18px, env(safe-area-inset-bottom))';return}
    const rect=root.getBoundingClientRect();
-   const bottom=Math.max(0,window.innerHeight-rect.bottom);
-   document.documentElement.style.setProperty('--live-hud-reserve',`${Math.ceil(rect.height+bottom+LAYOUT_GAP)}px`);
+   const bottom=Math.max(0,window.innerHeight-rect.top+LAYOUT_GAP);
+   slots.style.bottom=`${Math.ceil(bottom)}px`;
   });
  }
  function setVisible(active,{persist=true}={}){const visible=!!active;if(root)root.hidden=!visible;if(toggle)toggle.checked=visible;if(persist){try{localStorage.setItem(HUD_KEY,visible?'1':'0')}catch{}}document.documentElement.dataset.liveHud=visible?'visible':'hidden';syncLayout();window.dispatchEvent(new CustomEvent('cyber:live-hud-visibility',{detail:{visible}}));return visible}
