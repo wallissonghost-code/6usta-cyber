@@ -1,7 +1,9 @@
+import {GAME_RULES} from './rules.js';
 export function createCommands(runtime){
- const like=user=>runtime.drop({username:user||'Live',color:'#00f0ff',radius:7,damage:15,scoreValue:5});
- const comment=(user,text)=>{runtime.toast(`${user||'Live'}: ${text||''}`);return runtime.drop({username:user||'Live',color:'#ffe600',radius:9,damage:30,scoreValue:25,density:.003})};
- const gift=(user,name)=>{user=user||'Live';name=name||'Presente';runtime.toast(`🎁 ${user} mandou ${name}!`,'#ff0055');if(name==='Rosa')return runtime.drop({username:user,color:'#ff0055',radius:12,damage:100,scoreValue:120,density:.005});if(name==='Capivara'){for(let i=0;i<4;i++)setTimeout(()=>runtime.drop({username:user,color:'#39ff14',radius:10,damage:80,scoreValue:90}),i*140);return}return runtime.drop({username:user,color:'#b000ff',radius:18,damage:500,scoreValue:1500,density:.02})};
+ const spawn=(type,user)=>runtime.drop({username:user||'Live',...GAME_RULES.types[type]});
+ const like=user=>spawn('like',user);
+ const comment=(user,text)=>{runtime.toast(`${user||'Live'}: ${text||''}`);return spawn('comment',user)};
+ const gift=(user,name)=>{user=user||'Live';name=name||'Presente';runtime.toast(`🎁 ${user} mandou ${name}!`,'#ff0055');if(name==='Rosa')return spawn('rosa',user);if(name==='Capivara'){const r=GAME_RULES.types.capivara;for(let i=0;i<r.count;i++)setTimeout(()=>spawn('capivara',user),i*r.interval);return}return spawn('galaxia',user)};
  const dispatch=(action,p={})=>{switch(action){case'like':return like(p.username||p.user);case'comment':return comment(p.username||p.user,p.text||p.comment);case'gift_rosa':return gift(p.username||p.user,'Rosa');case'gift_capivara':return gift(p.username||p.user,'Capivara');case'gift_galaxia':return gift(p.username||p.user,'Galáxia');case'restart':return runtime.reset();default:return false}};
  return{like,comment,gift,dispatch};
 }
