@@ -1,7 +1,8 @@
 (()=>{'use strict';
-const BALL_TYPES=['like','comment','rosa','capivara','galaxia'];
+const BALL_TYPES=['tier1','tier2','tier3','tier4','tier5'];
+const TIER_LABELS={tier1:'Tier 1',tier2:'Tier 2',tier3:'Tier 3',tier4:'Tier 4',tier5:'Tier 5'};
 const ACTIONS=[
- {id:'drop_ball',label:'Bolinha',description:'Solta bolinhas no campo.',params:[{id:'ballType',label:'Tipo da bolinha',type:'select',default:'like',options:BALL_TYPES.map(value=>({value,label:value[0].toUpperCase()+value.slice(1)}))},{id:'quantity',label:'Quantidade',type:'number',min:1,max:50,default:1}]},
+ {id:'drop_ball',label:'Drop de bolinha',description:'Solta bolinhas por tier de potência.',params:[{id:'ballType',label:'Tier da bolinha',type:'select',default:'tier1',options:BALL_TYPES.map(value=>({value,label:TIER_LABELS[value]}))},{id:'quantity',label:'Quantidade',type:'number',min:1,max:50,default:1}]},
  {id:'restart',label:'Reiniciar',description:'Reinicia a partida.',params:[]}
 ];
 const rulesFrom=data=>data?.rules||data?.liveRules||data?.mappings||data?.config?.rules||data?.configuration?.rules||null;
