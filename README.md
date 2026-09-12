@@ -20,3 +20,5 @@ Jogo web integrado ao conector universal do Projeto Daniel.
 ## Invariantes da física
 
 Pinos são defletores: contato deve separar a bola imediatamente. O watchdog não pode empurrar, reposicionar ou pontuar bolas. Pontos só são concedidos após colisão física com `floorSensor`. Os multiplicadores são `2x / 5x / 15x / 5x / 2x`.
+
+<!-- deployment trigger: latest validated layout -->
