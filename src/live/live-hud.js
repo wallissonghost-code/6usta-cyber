@@ -14,17 +14,13 @@ export function createLiveHud(){
  const list=$('live-interactions-list');
  const toggle=$('liveHudToggle');
  const slots=document.querySelector('.slots-container');
- let frame=0;
  function savedVisible(){try{const value=localStorage.getItem(HUD_KEY);return value===null?true:value==='1'}catch{return true}}
  function syncLayout(){
-  cancelAnimationFrame(frame);
-  frame=requestAnimationFrame(()=>{
-   if(!slots)return;
-   if(!root||root.hidden){slots.style.bottom='max(18px, env(safe-area-inset-bottom))';return}
-   const rect=root.getBoundingClientRect();
-   const bottom=Math.max(0,window.innerHeight-rect.top+LAYOUT_GAP);
-   slots.style.bottom=`${Math.ceil(bottom)}px`;
-  });
+  if(!slots)return;
+  if(!root||root.hidden){slots.style.bottom='max(18px, env(safe-area-inset-bottom))';return}
+  const rect=root.getBoundingClientRect();
+  const bottom=Math.max(0,window.innerHeight-rect.top+LAYOUT_GAP);
+  slots.style.bottom=`${Math.ceil(bottom)}px`;
  }
  function setVisible(active,{persist=true}={}){const visible=!!active;if(root)root.hidden=!visible;if(toggle)toggle.checked=visible;if(persist){try{localStorage.setItem(HUD_KEY,visible?'1':'0')}catch{}}document.documentElement.dataset.liveHud=visible?'visible':'hidden';syncLayout();window.dispatchEvent(new CustomEvent('cyber:live-hud-visibility',{detail:{visible}}));return visible}
  function render(){if(!root||!list)return;list.replaceChildren();if(!rules.length){const empty=document.createElement('div');empty.className='live-rule-empty';empty.textContent='Aguardando regras do painel';list.appendChild(empty);syncLayout();return}for(const rule of rules){const card=document.createElement('article');card.className='live-rule-card';const icon=document.createElement('div');icon.className='live-rule-icon';const src=giftIcon(rule);if(src){const img=document.createElement('img');img.src=src;img.alt='';img.referrerPolicy='no-referrer';icon.appendChild(img)}else icon.textContent='🎁';const copy=document.createElement('div');copy.className='live-rule-copy';const b=document.createElement('b');b.textContent=giftName(rule);const small=document.createElement('small');small.textContent=effect(rule);copy.append(b,small);card.append(icon,copy);list.appendChild(card)}syncLayout()}
