@@ -31,7 +31,7 @@ test('multiplicadores acompanham a altura real do HUD da Live com várias linhas
  await page.goto('/');
  await page.waitForFunction(()=>window.CyberLiveHud);
  await page.evaluate(()=>{
-  const rules=Array.from({length:7},(_,i)=>({giftName:`Gift ${i+1}`,action:'drop_ball',params:{ballType:'like',quantity:1}}));
+  const rules=Array.from({length:7},(_,i)=>({giftName:`Gift ${i+1}`,action:'drop_ball',params:{ballType:'tier1',quantity:1}}));
   CyberLiveHud.setVisible(true);
   CyberLiveHud.setRules(rules);
  });
@@ -39,10 +39,19 @@ test('multiplicadores acompanham a altura real do HUD da Live com várias linhas
  const before=await page.evaluate(()=>{const s=document.querySelector('.slots-container').getBoundingClientRect(),h=document.getElementById('live-interactions').getBoundingClientRect();return{slotsBottom:s.bottom,hudTop:h.top,hudHeight:h.height,reserve:getComputedStyle(document.documentElement).getPropertyValue('--live-hud-reserve')}});
  expect(before.hudHeight).toBeGreaterThan(100);
  expect(before.slotsBottom).toBeLessThanOrEqual(before.hudTop-8);
- await page.evaluate(()=>CyberLiveHud.setRules([{giftName:'Gift único',action:'drop_ball',params:{ballType:'like',quantity:1}}]));
+ await page.evaluate(()=>CyberLiveHud.setRules([{giftName:'Gift único',action:'drop_ball',params:{ballType:'tier1',quantity:1}}]));
  await page.waitForTimeout(100);
  const after=await page.evaluate(()=>{const s=document.querySelector('.slots-container').getBoundingClientRect(),h=document.getElementById('live-interactions').getBoundingClientRect();return{slotsBottom:s.bottom,hudTop:h.top,hudHeight:h.height}});
  expect(after.hudHeight).toBeLessThan(before.hudHeight);
  expect(after.slotsBottom).toBeLessThanOrEqual(after.hudTop-8);
  expect(after.slotsBottom).toBeGreaterThan(before.slotsBottom);
+});
+
+test('HUD mobile usa duas colunas legíveis e painel de contribuidores permanece contido',async({page})=>{
+ await page.goto('/');await page.waitForFunction(()=>window.CyberLiveHud);
+ await page.evaluate(()=>CyberLiveHud.setRules(Array.from({length:5},(_,i)=>({giftName:`Presente ${i+1}`,action:'drop_ball',params:{ballType:`tier${Math.min(5,i+1)}`,quantity:1}}))));
+ const r=await page.evaluate(()=>{const live=document.querySelector('.live-interactions-list'),cards=[...document.querySelectorAll('.live-rule-card')],contributors=document.querySelector('.contributors-bar').getBoundingClientRect();return{cols:getComputedStyle(live).gridTemplateColumns,cards:cards.map(x=>x.getBoundingClientRect().toJSON()),contributors:contributors.toJSON(),iw:innerWidth}});
+ if(r.iw<=600)expect(r.cols.split(' ').length).toBe(2);
+ expect(r.cards.every(x=>x.width>0&&x.height>=55)).toBeTruthy();
+ expect(r.contributors.left).toBeGreaterThanOrEqual(0);expect(r.contributors.right).toBeLessThanOrEqual(r.iw+1);
 });
