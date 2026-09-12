@@ -17,13 +17,13 @@ export function createPhysics({Matter,engine,world,onCollision}){
    }
   }
   World.add(world,pins);slotWidth=W/5;slotY=H-GAME_RULES.board.slotBottom;
-  for(let i=1;i<5;i++){
-   const divider=Bodies.rectangle(i*slotWidth,slotY-28,GAME_RULES.board.dividerWidth,GAME_RULES.board.dividerHeight,{isStatic:true,friction:0,frictionStatic:0,restitution:.12,chamfer:{radius:Math.max(2,GAME_RULES.board.dividerWidth/2)},label:'divider'});
-   bounds.push(divider);World.add(world,divider);
-  }
-  const sensorWidth=Math.max(20,slotWidth-GAME_RULES.board.dividerWidth*2);
+  // Os divisores inferiores sao UI, nao corpos fisicos. Um corpo vertical estreito
+  // criava um ponto de equilibrio no topo onde uma esfera podia repousar para sempre,
+  // principalmente no solver do WebKit. A zona de pontuacao agora e uma faixa sensora
+  // continua, particionada em cinco sensores adjacentes: toda bola que cruza a linha
+  // fisicamente entra exatamente em um slot, sem obstaculo capaz de segura-la.
   for(let i=0;i<5;i++){
-   const sensor=Bodies.rectangle((i+.5)*slotWidth,slotY+20,sensorWidth,38,{isStatic:true,isSensor:true,label:'slotSensor'});
+   const sensor=Bodies.rectangle((i+.5)*slotWidth,slotY+20,slotWidth,38,{isStatic:true,isSensor:true,label:'slotSensor'});
    sensor.plugin={...(sensor.plugin||{}),slotIndex:i};slotSensors.push(sensor);
   }
   World.add(world,slotSensors);return snapshot();
