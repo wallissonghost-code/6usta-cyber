@@ -1,10 +1,12 @@
 import { lockViewport } from './ui/viewport.js';
 import { createGameRuntime } from './game/runtime.js';
 import { createCommands } from './game/commands.js';
+import { createActionConfig } from './game/action-config.js';
 
 lockViewport();
 const runtime=createGameRuntime();
-const commands=createCommands(runtime);
+const actionConfig=createActionConfig();
+const commands=createCommands(runtime,actionConfig);
 
 const hideDock=()=>{const d=document.getElementById('debug-dock');if(d)d.style.display='none'};
 Object.assign(window,{
@@ -18,8 +20,11 @@ window.CyberGame=Object.freeze({
  dropBall:runtime.drop,
  reset:runtime.reset,
  resize:runtime.resize,
- getState:runtime.getState,
+ getState:()=>({...runtime.getState(),actionQuantities:actionConfig.snapshot()}),
  getBallAudit:runtime.getBallAudit,
+ getActionConfig:actionConfig.snapshot,
+ setActionQuantity:actionConfig.setQuantity,
+ applyActionConfig:actionConfig.apply,
  triggerLike:commands.like,
  triggerComment:commands.comment,
  triggerGift:commands.gift,
