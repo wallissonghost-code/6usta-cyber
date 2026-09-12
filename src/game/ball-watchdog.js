@@ -1,4 +1,4 @@
-export function createBallWatchdog({world,balls,getBounds,onRemove,onStall}){
+export function createBallWatchdog({Matter,world,balls,getBounds,onRemove,onStall}){
  const {World}=Matter;const STALL_MS=1800,MIN_PROGRESS=.7;
  function remove(ball,reason){if(ball?.gameData){ball.gameData.removedReason=reason;ball.gameData.removedAt=performance.now()}World.remove(world,ball);const i=balls.indexOf(ball);if(i>=0)balls.splice(i,1);onRemove?.(ball,reason)}
  function tick(now=performance.now()){
