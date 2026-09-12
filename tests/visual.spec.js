@@ -48,13 +48,15 @@ test('multiplicadores acompanham a altura real do HUD da Live com várias linhas
  expect(after.slotsBottom).toBeGreaterThan(before.slotsBottom);
 });
 
-test('HUD mobile usa três colunas e multiplicadores ficam abaixo de todos os pinos',async({page})=>{
+test('HUD mobile compacto mantém multiplicadores abaixo dos pinos',async({page})=>{
  await page.goto('/');await page.waitForFunction(()=>window.CyberLiveHud&&window.CyberGame);
  await page.evaluate(()=>CyberLiveHud.setRules(Array.from({length:5},(_,i)=>({giftName:`Presente ${i+1}`,action:'drop_ball',params:{ballType:`tier${Math.min(5,i+1)}`,quantity:1}}))));
  await page.waitForTimeout(100);
- const r=await page.evaluate(()=>{const live=document.querySelector('.live-interactions-list'),cards=[...document.querySelectorAll('.live-rule-card')],contributors=document.querySelector('.contributors-bar').getBoundingClientRect(),slots=document.querySelector('.slots-container').getBoundingClientRect(),state=CyberGame.getState();return{cols:getComputedStyle(live).gridTemplateColumns,cards:cards.map(x=>x.getBoundingClientRect().toJSON()),contributors:contributors.toJSON(),slots:slots.toJSON(),pinBottom:state.board.pinBottom,iw:innerWidth}});
- if(r.iw<=600)expect(r.cols.split(' ').length).toBe(3);
- expect(r.cards.every(x=>x.width>0&&x.height>=50)).toBeTruthy();
+ const r=await page.evaluate(()=>{const live=document.querySelector('.live-interactions-list'),cards=[...document.querySelectorAll('.live-rule-card')],contributors=document.querySelector('.contributors-bar').getBoundingClientRect(),slots=document.querySelector('.slots-container').getBoundingClientRect(),hud=document.getElementById('live-interactions').getBoundingClientRect(),state=CyberGame.getState();return{cols:getComputedStyle(live).gridTemplateColumns,cards:cards.map(x=>x.getBoundingClientRect().toJSON()),contributors:contributors.toJSON(),slots:slots.toJSON(),hud:hud.toJSON(),pinBottom:state.board.pinBottom,iw:innerWidth,ih:innerHeight}});
+ if(r.iw<=600){expect(r.cols.split(' ').length).toBe(4);expect(r.cards.every(x=>x.width>0&&x.height>=46)).toBeTruthy()}
+ else expect(r.cards.every(x=>x.width>0&&x.height>=50)).toBeTruthy();
  expect(r.contributors.left).toBeGreaterThanOrEqual(0);expect(r.contributors.right).toBeLessThanOrEqual(r.iw+1);
  expect(r.slots.top).toBeGreaterThan(r.pinBottom+8);
+ expect(r.slots.bottom).toBeLessThanOrEqual(r.hud.top-8);
+ expect(r.hud.bottom).toBeLessThanOrEqual(r.ih+1);
 });
