@@ -1,9 +1,10 @@
 export const GAME_RULES=Object.freeze({
  gravity:1.4,
- boss:{maxHp:1200,yRatio:.28,maxRadius:45},
- board:{rows:6,pinRadius:5,pinBodyRadius:6,slotBottom:180,dividerWidth:5,dividerHeight:82},
+ boss:Object.freeze({maxHp:1200,yRatio:.28,maxRadius:45}),
+ board:Object.freeze({rows:6,pinRadius:5,pinBodyRadius:6,pinRestitution:.35,slotBottom:180,dividerWidth:5,dividerHeight:82}),
+ pinDeflector:Object.freeze({centerTolerance:1.5,cooldownMs:90,minLateral:1.35,maxLateral:3.2,lateralKick:.65,minDownward:1.55,maxDownward:4.6,verticalCarry:.72}),
  slots:Object.freeze([2,5,15,5,2]),
- ball:{restitution:.56,friction:.02,frictionAir:.008,slop:.05,spawnSpread:.34},
+ ball:Object.freeze({restitution:.42,friction:0,frictionStatic:0,frictionAir:.006,slop:.04,spawnSpread:.34}),
  types:Object.freeze({
   like:Object.freeze({color:'#00f0ff',radius:7,damage:15,scoreValue:5,density:.002}),
   comment:Object.freeze({color:'#ffe600',radius:9,damage:30,scoreValue:25,density:.003}),
