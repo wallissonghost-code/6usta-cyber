@@ -6,11 +6,11 @@ export const GAME_RULES=Object.freeze({
  slots:Object.freeze([2,5,15,5,2]),
  ball:Object.freeze({restitution:.42,friction:0,frictionStatic:0,frictionAir:.006,slop:.04,spawnSpread:.34}),
  types:Object.freeze({
-  like:Object.freeze({color:'#00f0ff',radius:7,damage:15,scoreValue:5,density:.002}),
-  comment:Object.freeze({color:'#ffe600',radius:9,damage:30,scoreValue:25,density:.003}),
-  rosa:Object.freeze({color:'#ff0055',radius:11,damage:100,scoreValue:120,density:.004}),
-  capivara:Object.freeze({color:'#39ff14',radius:9,damage:80,scoreValue:90,density:.003,count:4,interval:180}),
-  galaxia:Object.freeze({color:'#b000ff',radius:14,damage:500,scoreValue:1500,density:.008})
+  tier1:Object.freeze({tier:1,color:'#00f0ff',radius:7,damage:15,scoreValue:5,density:.002}),
+  tier2:Object.freeze({tier:2,color:'#ffe600',radius:9,damage:30,scoreValue:25,density:.003}),
+  tier3:Object.freeze({tier:3,color:'#39ff14',radius:9,damage:80,scoreValue:90,density:.003}),
+  tier4:Object.freeze({tier:4,color:'#ff0055',radius:11,damage:100,scoreValue:120,density:.004}),
+  tier5:Object.freeze({tier:5,color:'#b000ff',radius:14,damage:500,scoreValue:1500,density:.008})
  })
 });
 export const slotIndex=(x,width)=>Math.min(4,Math.max(0,Math.floor(x/(width/5))));
